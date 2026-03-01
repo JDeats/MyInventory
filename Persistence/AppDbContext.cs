@@ -1,4 +1,3 @@
-using System;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +5,8 @@ namespace Persistence;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    public required DbSet<Item> Items { get; set; }
+    public required DbSet<ElectronicComponent> ElectronicComponents { get; set; }
     public required DbSet<Capacitor> Capacitors { get; set; }
     public required DbSet<FerriteBead> FerriteBeads { get; set; }
     public required DbSet<Resistor> Resistors { get; set; }
