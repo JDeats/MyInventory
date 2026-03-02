@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
+import axios from 'axios';
 
 function App() {
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5082/api/items')
-    .then(response => response.json())
-    .then(data => setItems(data))
+    axios.get<Item[]>('http://localhost:5082/api/items')
+    .then(response => setItems(response.data))
   }, [])
 
   return (
