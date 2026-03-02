@@ -1,3 +1,4 @@
+using Application.Items.Queries;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -14,6 +15,12 @@ builder.Services.AddDbContext<AppDbContext>( opt =>
 });
 
 builder.Services.AddCors();
+
+builder.Services.AddMediatR(cfg => 
+{
+    cfg.LicenseKey = builder.Configuration["MediatR:LicenseKey"];
+    cfg.RegisterServicesFromAssemblyContaining<GetItemList.Handler>();
+});
 
 var app = builder.Build();
 

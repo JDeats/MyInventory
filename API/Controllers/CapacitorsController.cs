@@ -1,26 +1,34 @@
-using System;
+using Application.Capacitors.Commands;
+using Application.Capacitors.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers;
 
-public class CapacitorsController(AppDbContext context) : BaseApiController
+public class CapacitorsController : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<List<Capacitor>>> GetCapacitors()
     {
-        return await context.Capacitors.ToListAsync();
+        return await Mediator.Send(new GetCapacitorList.Query());
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Capacitor>> GetCapacitor(int id)
+    {
+        return await Mediator.Send(new GetCapacitor.Query{Id = id});
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddCapacitor(Capacitor cap)
+    public async Task<ActionResult<int>> AddCapacitor(Capacitor cap)
     {
-        await context.Capacitors.AddAsync(cap);
-        bool result = await context.SaveChangesAsync() > 0;
+        return await Mediator.Send(new CreateCapacitor.Command{Capacitor = cap});
+    }
 
-        if (result) return Ok();
-        return BadRequest("Failed to save capacitor");
+    [HttpPut]
+    public async Task<ActionResult> EditCapacitor(Capacitor cap)
+    {
+        await Mediator.Send(new EditCapacitor.Command{Capacitor = cap});
+        return NoContent();
     }
 }
