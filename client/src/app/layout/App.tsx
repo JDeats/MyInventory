@@ -1,19 +1,14 @@
-import { useEffect, useState } from 'react'
-import { CssBaseline, List, ListItem, ListItemText } from '@mui/material';
-import axios from 'axios';
+import { CssBaseline } from '@mui/material';
 import MenuBar from './MenuBar';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ItemList from '../../features/items/ItemList';
 
 function App() {
-  const [items, setItems] = useState<Item[]>([]);
 
-  useEffect(() => {
-    axios.get<Item[]>('http://localhost:5082/api/items')
-    .then(response => setItems(response.data))
-  }, [])
 
   const theme = createTheme({
     palette: {
+      mode: "dark",
       background: {
         default: "#242424",
       },
@@ -29,13 +24,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline/>
         <MenuBar />
-        <List style={{}}>
-          {items.map((item) => (
-            <ListItem key={item.id} sx={{ textAlign: "center" }}>
-              <ListItemText>{item.name}: {item.description}</ListItemText>
-            </ListItem>
-          ))}
-        </List>
+        <ItemList />
       </ThemeProvider>
     </>
   )
