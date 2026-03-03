@@ -1,24 +1,23 @@
-using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
 
 namespace Application.Capacitors.Commands;
 
-public class EditCapacitor
+public class DeleteCapacitor
 {
     public class Command : IRequest
     {
-        public required Capacitor Capacitor { get; set; }
+        public required int Id { get; set; }
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command>
+    public class Handler(AppDbContext context) : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            Capacitor? cap = await context.Capacitors.FindAsync([request.Capacitor.Id], cancellationToken) 
+            Capacitor? cap = await context.Capacitors.FindAsync([request.Id], cancellationToken) 
                 ?? throw new Exception("Cannot find capacitor");
-            mapper.Map(request.Capacitor, cap);
+            context.Remove(cap);
             await context.SaveChangesAsync(cancellationToken);
         }
     }

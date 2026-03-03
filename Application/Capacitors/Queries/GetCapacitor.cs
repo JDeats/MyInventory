@@ -15,8 +15,8 @@ public class GetCapacitor
     {
         public async Task<Capacitor> Handle(Query request, CancellationToken cancellationToken)
         {
-            var cap = await context.Capacitors.FindAsync([request.Id], cancellationToken);
-            if (cap == null) throw new Exception("Capacitor not found");
+            var cap = await context.Capacitors.FindAsync([request.Id], cancellationToken) 
+                ?? throw new Exception("Capacitor not found");
             return cap;
         }
     }
