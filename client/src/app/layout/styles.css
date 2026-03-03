@@ -1,0 +1,8 @@
+.menu-button {
+  background-color: green !important;
+  color: #ffffff !important;
+}
+
+.menu-button:hover {
+  background-color: purple !important;
+}
